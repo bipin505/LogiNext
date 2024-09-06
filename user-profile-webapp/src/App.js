@@ -1,25 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useContext } from 'react';
+import { UserContext } from './context/UserContext';
+import UserProfile from './components/UserProfile';
+import LoadingSpinner from './components/LoadingSpinner';
+import EditModal from './components/EditModal';
+import DeleteConfirmationModal from './components/DeleteConfirmationModal';
+import './App.css'
 
-function App() {
+const App = () => {
+  const { users, loading } = useContext(UserContext);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        {loading ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="user-list">
+            {users.map(user => (
+              <UserProfile key={user.id} user={user} />
+            ))}
+          </div>
+        )}
+        <EditModal />
+        <DeleteConfirmationModal />
+      </div>
   );
-}
+};
 
 export default App;
